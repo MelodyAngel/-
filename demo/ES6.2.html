@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6-Domo演示</title>
+</head>
+<body>
+  <h2> ES6-2Demo演示 </h2>
+
+  <script>
+
+      const sun=(x,y,z) =>{
+        let total=0;
+        if(x) total+=x;
+        if(y) total+=y;
+        if(z) total+=z;
+
+        console.log(`total:${total}`)
+      }
+
+      sun(5,'',9)
+
+      /*不确定函数参数有多少个 所以用。。。表示 并且给了m作为名字*/
+
+      const xun=(...m)=> {
+        let total=0;
+        /*这里把 参数m 作为 遍历的元素集合*/
+        for(let i of m){
+
+          total+=i
+          console.log(total);
+          console.log(`total:${i}`)
+        }
+      };
+
+      xun(4,8,9,10)
+
+
+    /*和数组的使用 扩展运算符 使用在数组 数组转为用逗号分隔的参数序列。*/
+    let arr1=[1,3];
+    let arr2=[4,8]
+
+    console.log("concat:"+arr1.concat(arr2))
+    console.log([...arr1,...arr2])
+
+      //对数组的解构赋值
+    var [x,...y]=[4,8,10,15,20]
+    console.log(y)
+    // [8, 10, 15, 20]
+
+      //解构赋值
+    let [a,b,c]='ES6';
+    console.log(a,b,c)
+    //E S 6
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+
+
+<div id="app">
+  <App>
+
+  </App>
+  <Another />
+
+</div>
+<script>
+  var bus = new Vue()
+
+  Vue.component('Another', {
+    template: '<div @click="emit">This is Another Content </div>',
+    methods: {
+      emit() {
+        bus.$emit('anotherclick')
+      }
+    }
+
+  })
+
+  Vue.component('App', {
+    template: '<div>This is App Content {{ info }}</div>',
+    created() {
+      bus.$on('anotherclick', () => {
+          this.info = 'anotherclick clicked';
+        }
+      )},
+    data: () => {return {info: ''}}
+  })
+
+  var vm = new Vue({
+    el: '#app'
+  })
+
+
+</script>
+</body>
+</html>

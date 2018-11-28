@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise</title>
+  <script src="../../../Vue2.0+Node.js+MongoDB全栈打造商城系统/project/z1b8jp/src/router/index.js"></script>
+</head>
+<body>
+
+<div>Promise写法的deom</div>
+
+<script >
+  let checkLogin=()=>{
+    /*必须 return Promise的结构 我们才可以通过。then的方式来调用回调函数 */
+    return new Promise((resolve, reject)=>{
+      let flag=document.cookie.indexOf('userId') >-1?true:false;
+
+      /*通过userId 测试是否登录 但没有接口 所以先写死*/
+      //Promise配合axios 下面可以写  axios
+      if(flag=true){
+        resolve({
+          /*自定义请求参数*/
+          status:0,
+          result:true
+        })
+      }else {
+        reject(`未知原因:登录失败`)
+      }
+    })
+  };
+
+
+  let getUserInof=()=>{
+    return new Promise( (resolve, reject) => {
+      let  userInof={
+        uesrid:'101'
+      }
+      resolve(userInof)
+    })
+  };
+
+  checkLogin().then( (res)=>{
+    /*这里可以写执行成功的回调函数或失败的回调函数*/
+    console.log(`登录成功`);
+    return  getUserInof()
+    /*在then方法中，你也可以直接return数据而不是Promise对象，
+     后面的then中参数res2就可以接收到数据了，*/
+  }).catch( (error)=>{
+    console.log(`登录失败`)
+  }).then((res2)=>{
+    console.log(`userId:${res2.uesrid}`)
+  });
+
+  Promise.all([checkLogin(),getUserInof()])
+    .then(([res1,res2])=>{
+      console.log(`result1:${res1.status},result2:${res2.uesrid}`)
+
+    })
+
+</script>
+</body>
+</html>

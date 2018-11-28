@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../node_modules/axios/dist/axios.js"></script>
+</head>
+<body>
+
+<div id="app" class="container">
+  <h1>vue-axios插件讲解</h1>
+
+  <a href="javascript:;" class="btn btn-primary"
+     @click="get">
+    get请求
+  </a>
+  <a href="javascript:;" class="btn btn-primary"
+     @click="post">
+    post请求
+  </a>
+  <a href="javascript:;" class="btn btn-primary"
+     @click="http">
+    http请求
+  </a>
+  <div>
+    <span>{{msg}}</span>
+  </div>
+</div>
+
+<script>
+  new Vue({
+    el:"#app",
+    data () {
+      return {
+        msg:""
+      }
+    },
+
+    mounted () {
+      /*
+      * 拦截器
+      * 可以截取请求或响应在被 then 或者 catch 处理之前*/
+      //添加请求拦截器
+      axios.interceptors.request.use( config=>{
+        //在发送请求之前做某事
+        console.log( "request init.")
+        return config;
+      }, error=>{
+        //请求错误时做些事
+        console.log( "error-request  init.")
+        return Promise.reject(error);
+
+      });
+
+      //添加响应拦截器
+      axios.interceptors.response.use(response=>{
+        //对响应数据做些事
+        console.log( "response init.")
+        return response;
+      },error => {
+        //响应错误时做些事
+        console.log( "error-response  init.")
+        return Promise.reject(error);
+      })
+
+
+    },
+
+    methods:{
+      get () {
+        axios.get('../package.json',{
+          /*get 传递参数*/
+          params:{
+            ueseId:'999'
+          },
+          headers:{
+            /*请求头*/
+            token:'jack'
+          },
+        }).then(res => {
+          /*成功后*/
+          this.msg=res.data;
+        }).catch(error => {
+          /*异常*/
+          console.log("error init.")
+
+        })
+      },
+      post () {
+        //post 3个参数
+        axios.post('../package.json',{
+          /*注意这里 post和get 是有区别的 不需要使用 params 直接使用*/
+          ueseId:'888'
+
+        },{
+          headers:{
+            /*请求头*/
+            token:'tom'
+          }
+        }).then(res=>{
+          this.msg=res.data
+        }).catch( error=>{
+          console.log("error init.")
+        })
+
+
+      },
+      http () {
+        /*配置的方式*/
+        axios({
+          url:"../package.json",
+
+          //注意 get和post的区别
+
+         /* method:"post",
+          data:{
+            userId:'101'
+          },
+          headers:{
+            token:"http-test"
+          }*/
+
+          method:"get",
+          params:{
+            userId:'101'
+          },
+          headers:{
+            token:"http-test"
+          }
+
+
+
+
+
+        }).then(res=>{
+          this.msg=res.data
+        }).catch(error=>{
+          console.log("error init.")
+        })
+
+      }
+    }
+  })
+</script>
+
+</body>
+</html>
